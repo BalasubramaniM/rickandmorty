@@ -1,17 +1,9 @@
-import React, { useEffect } from "react";
+import React from "react";
 import ReactDOM from "react-dom";
 import { HomePage } from "./components";
 
 const App = () => {
-  useEffect(() => {
-    console.log("App");
-  }, []);
-
-  return (
-    <div>
-      <HomePage />
-    </div>
-  );
+  return <HomePage />;
 };
 
 ReactDOM.render(<App />, document.getElementById("container"));

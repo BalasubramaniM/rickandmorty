@@ -3,14 +3,7 @@ import Card from "components/Card";
 import API from "utils/API";
 import Pagination from "components/Pagination";
 import { Section, H4, SortFilterContainer, Text, P } from "./styles";
-import {
-  Container,
-  Row,
-  Col,
-  DropdownButton,
-  Dropdown,
-  Form
-} from "react-bootstrap";
+import { Container, Row, Col, Form } from "react-bootstrap";
 
 const Dashboard = () => {
   const [data, setData] = useState([]);
@@ -18,7 +11,6 @@ const Dashboard = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(true);
   const [sortBy, setSortBy] = useState("Ascending");
-  const [show, setShow] = useState(false);
   const [species, setSpecies] = useState([]);
   const [genders, setGenders] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -46,21 +38,10 @@ const Dashboard = () => {
       setDataClone(results);
       setSpecies([]);
       setGenders([]);
+      setSortBy("Ascending");
       setLoading(false);
     });
     setCurrentPage(pageNo);
-  };
-
-  const sortByAsc = () => {
-    setSortBy("Ascending");
-    const sortedData = data.sort((a, b) => a.id - b.id);
-    setData(sortedData);
-  };
-
-  const sortByDsc = () => {
-    setSortBy("Descending");
-    const sortedData = data.sort((a, b) => b.id - a.id);
-    setData(sortedData);
   };
 
   const FilterComponent = () => {
@@ -119,7 +100,7 @@ const Dashboard = () => {
 
     return (
       <Row>
-        <Col>
+        <Col xl={6} lg={6} md={12} sm={12}>
           <Text>Filter based on Species</Text>
           <Form>
             {species.map((obj, index) => (
@@ -135,7 +116,7 @@ const Dashboard = () => {
             ))}
           </Form>
         </Col>
-        <Col>
+        <Col xl={6} lg={6} md={12} sm={12}>
           <Text>Filter based on Gender</Text>
           <Form>
             {genders.map((obj, index) => (
@@ -155,6 +136,17 @@ const Dashboard = () => {
     );
   };
 
+  const onSort = value => {
+    setSortBy(value);
+    let sortedData = [];
+    if (value === "Ascending") {
+      sortedData = data.sort((a, b) => a.id - b.id);
+    } else {
+      sortedData = data.sort((a, b) => b.id - a.id);
+    }
+    setData(sortedData);
+  };
+
   return (
     <Section>
       <Container>
@@ -165,27 +157,24 @@ const Dashboard = () => {
         </Row>
         <SortFilterContainer>
           <Row>
-            <Col xl={6} lg={6} md={12} sm={12}>
-              <DropdownButton
-                id="dropdown-basic-button"
-                title={`Sort by ID - ${sortBy}`}
-                variant="secondary"
-              >
-                <Dropdown.Item
-                  active={sortBy === "Ascending"}
-                  onClick={sortByAsc}
-                >
-                  Sort by Ascending
-                </Dropdown.Item>
-                <Dropdown.Item
-                  active={sortBy === "Descending"}
-                  onClick={sortByDsc}
-                >
-                  Sort by Descending
-                </Dropdown.Item>
-              </DropdownButton>
+            <Col xl={4} lg={4} md={12} sm={12}>
+              <Text>Sort By</Text>
+              <Form>
+                {["Ascending", "Descending"].map((val, index) => (
+                  <Form.Check
+                    inline
+                    key={val}
+                    type="radio"
+                    label={val}
+                    name="sortByRadio"
+                    checked={val === sortBy}
+                    onChange={() => onSort(val)}
+                    id={`sortByRadio-${index}`}
+                  />
+                ))}
+              </Form>
             </Col>
-            <Col xl={6} lg={6} md={12} sm={12}>
+            <Col xl={8} lg={8} md={12} sm={12}>
               <FilterComponent />
             </Col>
           </Row>
@@ -204,7 +193,7 @@ const Dashboard = () => {
                 lg={3}
                 md={3}
                 sm={6}
-				xs={6}
+                xs={6}
               >
                 <Card data={user} />
               </Col>
@@ -212,11 +201,15 @@ const Dashboard = () => {
           )}
         </Row>
         {data.length > 0 && (
-          <Pagination
-            getPage={handlePage}
-            totalPages={totalPages}
-            currentPage={currentPage}
-          />
+          <Row>
+            <Col xl={12} lg={12} md={12} sm={12}>
+              <Pagination
+                getPage={handlePage}
+                totalPages={totalPages}
+                currentPage={currentPage}
+              />
+            </Col>
+          </Row>
         )}
       </Container>
     </Section>
