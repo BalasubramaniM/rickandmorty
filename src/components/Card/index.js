@@ -25,7 +25,6 @@ const CardComponent = ({ data }) => {
       <ListGroup.Item>ID: {id}</ListGroup.Item>
         <ListGroup.Item>Status: {status}</ListGroup.Item>
         <ListGroup.Item>Gender: {gender}</ListGroup.Item>
-        <i class="fa fa-female"></i>
       </ListGroup>
       <Card.Footer>
       <small className="text-muted">{`Created: ${moment(created).format('LL')}`}</small>
