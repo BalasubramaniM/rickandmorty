@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { number } from "prop-types";
+import { number, func } from "prop-types";
 import { Pagination } from "react-bootstrap";
 import { PaginationContainer } from "./styles";
 
@@ -43,11 +43,14 @@ const PaginationComponent = ({ totalPages, getPage, currentPage }) => {
 };
 
 PaginationComponent.propTypes = {
-  totalPages: number
+  totalPages: number,
+  getPage: func.isRequired,
+  currentPage: number
 };
 
 PaginationComponent.defaultProps = {
-  totalPages: 1
+  totalPages: 1,
+  currentPage: 1
 };
 
 export default PaginationComponent;

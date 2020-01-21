@@ -24,10 +24,6 @@ export const Text = styled.h6`
   margin: 12px 0px;
 `;
 
-export const FilterContainer = styled.div``;
-
-export const FilterSection = styled.div``;
-
 export const P = styled.p`
   margin-top: 2rem;
 `;

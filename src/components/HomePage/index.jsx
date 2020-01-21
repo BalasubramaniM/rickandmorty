@@ -2,13 +2,7 @@ import React, { useEffect, useState } from "react";
 import Card from "components/Card";
 import API from "utils/API";
 import Pagination from "components/Pagination";
-import {
-  Section,
-  H4,
-  SortFilterContainer,
-  Text,
-  P,
-} from "./styles";
+import { Section, H4, SortFilterContainer, Text, P } from "./styles";
 import {
   Container,
   Row,
@@ -70,7 +64,6 @@ const Dashboard = () => {
   };
 
   const FilterComponent = () => {
-
     const getSpecies = apiData => {
       const speciesList = [...new Set(apiData.map(res => res.species))];
       return speciesList.map(type => ({ type: type, value: true }));
@@ -82,23 +75,28 @@ const Dashboard = () => {
     };
 
     useEffect(() => {
-      if(species.length === 0) {
+      if (species.length === 0) {
         const speciesArr = getSpecies(dataClone);
         setSpecies(speciesArr);
       }
-      if(genders.length === 0) {
+      if (genders.length === 0) {
         const gendersArr = getGenders(dataClone);
         setGenders(gendersArr);
       }
     }, [species, genders]);
-    
 
     const handleSpecies = (index, e) => {
       const { checked } = e.target;
       species[index].value = checked;
-      const selectedSpecies = species.filter(res => res.value).map(res => res.type);
-      const selectedGenders = genders.filter(res => res.value).map(res => res.type);
-      const filteredData = dataClone.filter(d => selectedSpecies.indexOf(d.species) > -1).filter(d => selectedGenders.indexOf(d.gender) > -1);
+      const selectedSpecies = species
+        .filter(res => res.value)
+        .map(res => res.type);
+      const selectedGenders = genders
+        .filter(res => res.value)
+        .map(res => res.type);
+      const filteredData = dataClone
+        .filter(d => selectedSpecies.indexOf(d.species) > -1)
+        .filter(d => selectedGenders.indexOf(d.gender) > -1);
       setData(filteredData);
       setSpecies([...species]);
     };
@@ -106,48 +104,54 @@ const Dashboard = () => {
     const handleGenders = (index, e) => {
       const { checked } = e.target;
       genders[index].value = checked;
-      const selectedSpecies = species.filter(res => res.value).map(res => res.type);
-      const selectedGenders = genders.filter(res => res.value).map(res => res.type);
-      const filteredData = dataClone.filter(d => selectedGenders.indexOf(d.gender) > -1).filter(d => selectedSpecies.indexOf(d.species) > -1);
+      const selectedSpecies = species
+        .filter(res => res.value)
+        .map(res => res.type);
+      const selectedGenders = genders
+        .filter(res => res.value)
+        .map(res => res.type);
+      const filteredData = dataClone
+        .filter(d => selectedGenders.indexOf(d.gender) > -1)
+        .filter(d => selectedSpecies.indexOf(d.species) > -1);
       setData(filteredData);
       setGenders([...genders]);
     };
 
     return (
       <Row>
-            <Col>
-              <Text>Filter based on Species</Text>
-              <Form>
-                {species.map((obj, index) => (
-                  <Form.Check
-                    inline
-                    label={obj.type}
-                    key={obj.type}
-                    type="checkbox"
-                    checked={obj.value}
-                    onChange={e => handleSpecies(index, e)}
-                    id={`inline-${obj.type}-1`}
-                  />
-                ))}
-              </Form>
-            </Col>
-            <Col>
-              <Text>Filter based on Gender</Text>
-              <Form>
-                {genders.map((obj, index) => (
-                  <Form.Check
-                    inline
-                    label={obj.type}
-                    key={obj.type}
-                    type="checkbox"
-                    checked={obj.value}
-                    onChange={e => handleGenders(index, e)}
-                    id={`inline-${obj.type}-1`}
-                  />
-                ))}
-              </Form>
-            </Col>
-            </Row>
+        <Col>
+          <Text>Filter based on Species</Text>
+          <Form>
+            {species.map((obj, index) => (
+              <Form.Check
+                inline
+                label={obj.type}
+                key={obj.type}
+                type="checkbox"
+                checked={obj.value}
+                onChange={e => handleSpecies(index, e)}
+                id={`inline-${obj.type}-1`}
+              />
+            ))}
+          </Form>
+        </Col>
+        <Col>
+          <Text>Filter based on Gender</Text>
+          <Form>
+            {genders.map((obj, index) => (
+              <Form.Check
+                inline
+                label={obj.type}
+                key={obj.type}
+                type="checkbox"
+                checked={obj.value}
+                onChange={e => handleGenders(index, e)}
+                id={`inline-${obj.type}-1`}
+              />
+            ))}
+          </Form>
+        </Col>
+      </Row>
     );
   };
 
@@ -158,11 +162,10 @@ const Dashboard = () => {
           <Col xl={12} lg={12} md={12} sm={12}>
             <H4>Rick and Morty Characters</H4>
           </Col>
-          <Col xl={6} lg={6} md={12} sm={12}></Col>
         </Row>
         <SortFilterContainer>
           <Row>
-            <Col>
+            <Col xl={6} lg={6} md={12} sm={12}>
               <DropdownButton
                 id="dropdown-basic-button"
                 title={`Sort by ID - ${sortBy}`}
@@ -182,7 +185,7 @@ const Dashboard = () => {
                 </Dropdown.Item>
               </DropdownButton>
             </Col>
-            <Col>
+            <Col xl={6} lg={6} md={12} sm={12}>
               <FilterComponent />
             </Col>
           </Row>
@@ -190,7 +193,7 @@ const Dashboard = () => {
         <Row>
           {data.length === 0 ? (
             <Col>
-            <P>No more data.</P>
+              <P>No more data.</P>
             </Col>
           ) : (
             data.map(user => (
@@ -201,13 +204,20 @@ const Dashboard = () => {
                 lg={3}
                 md={3}
                 sm={6}
+				xs={6}
               >
                 <Card data={user} />
               </Col>
             ))
           )}
         </Row>
-        {data.length > 0 && <Pagination getPage={handlePage} totalPages={totalPages} currentPage={currentPage} />}
+        {data.length > 0 && (
+          <Pagination
+            getPage={handlePage}
+            totalPages={totalPages}
+            currentPage={currentPage}
+          />
+        )}
       </Container>
     </Section>
   );
