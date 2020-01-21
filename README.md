@@ -1,6 +1,6 @@
-# Ricky and Morty
+# Rick and Morty
 
-Ricky and Morty app.
+Rick and Morty app.
 
 ### Installing
 
@@ -8,12 +8,13 @@ A step by step series of examples that tell you how to get a development env run
 
 ```
 git clone git@github.com:balasubramanim/rickandmorty.git
-npm install
+cd rickandmorty
 ```
 
 And repeat
 
 ```
+npm install
 npm start
 ```
 
