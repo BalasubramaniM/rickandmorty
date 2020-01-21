@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Card from "components/Card";
 import API from "utils/API";
-import Skeleton from "utils/Skeleton";
 import Pagination from "components/Pagination";
 import {
   Section,
   H4,
   SortFilterContainer,
   Text,
-  FilterContainer,
-  FilterSection,
+  P,
 } from "./styles";
 import {
   Container,
@@ -17,10 +15,6 @@ import {
   Col,
   DropdownButton,
   Dropdown,
-  InputGroup,
-  FormControl,
-  Button,
-  Modal,
   Form
 } from "react-bootstrap";
 
@@ -33,9 +27,10 @@ const Dashboard = () => {
   const [show, setShow] = useState(false);
   const [species, setSpecies] = useState([]);
   const [genders, setGenders] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
-    if (data.length === 0) {
+    if (data.length === 0 && loading) {
       API.get("/").then(res => {
         const { data: { results = [], info } = {} } = res;
         setData(results);
@@ -54,19 +49,23 @@ const Dashboard = () => {
     }).then(res => {
       const { data: { results = [], info } = {} } = res;
       setData(results);
+      setDataClone(results);
+      setSpecies([]);
+      setGenders([]);
       setLoading(false);
     });
+    setCurrentPage(pageNo);
   };
 
   const sortByAsc = () => {
     setSortBy("Ascending");
-    const sortedData = data.sort((a, b) => a - b);
+    const sortedData = data.sort((a, b) => a.id - b.id);
     setData(sortedData);
   };
 
   const sortByDsc = () => {
     setSortBy("Descending");
-    const sortedData = data.sort((a, b) => b - a);
+    const sortedData = data.sort((a, b) => b.id - a.id);
     setData(sortedData);
   };
 
@@ -98,7 +97,8 @@ const Dashboard = () => {
       const { checked } = e.target;
       species[index].value = checked;
       const selectedSpecies = species.filter(res => res.value).map(res => res.type);
-      const filteredData = dataClone.filter(d => selectedSpecies.indexOf(d.species) > -1);
+      const selectedGenders = genders.filter(res => res.value).map(res => res.type);
+      const filteredData = dataClone.filter(d => selectedSpecies.indexOf(d.species) > -1).filter(d => selectedGenders.indexOf(d.gender) > -1);
       setData(filteredData);
       setSpecies([...species]);
     };
@@ -106,8 +106,9 @@ const Dashboard = () => {
     const handleGenders = (index, e) => {
       const { checked } = e.target;
       genders[index].value = checked;
+      const selectedSpecies = species.filter(res => res.value).map(res => res.type);
       const selectedGenders = genders.filter(res => res.value).map(res => res.type);
-      const filteredData = dataClone.filter(d => selectedGenders.indexOf(d.gender) > -1);
+      const filteredData = dataClone.filter(d => selectedGenders.indexOf(d.gender) > -1).filter(d => selectedSpecies.indexOf(d.species) > -1);
       setData(filteredData);
       setGenders([...genders]);
     };
@@ -187,8 +188,10 @@ const Dashboard = () => {
           </Row>
         </SortFilterContainer>
         <Row>
-          {loading ? (
-            <Skeleton />
+          {data.length === 0 ? (
+            <Col>
+            <P>No more data.</P>
+            </Col>
           ) : (
             data.map(user => (
               <Col
@@ -204,7 +207,7 @@ const Dashboard = () => {
             ))
           )}
         </Row>
-        <Pagination getPage={handlePage} totalPages={totalPages} />
+        {data.length > 0 && <Pagination getPage={handlePage} totalPages={totalPages} currentPage={currentPage} />}
       </Container>
     </Section>
   );

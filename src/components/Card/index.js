@@ -5,9 +5,6 @@ import moment from 'moment';
 
 const CardComponent = ({ data }) => {
   const { id, image, name, species, status, gender, created, origin } = data;
-  useEffect(() => {
-    console.log("Mounted");
-  }, []);
 
   return (
     <Card>

@@ -3,9 +3,8 @@ import { number } from "prop-types";
 import { Pagination } from "react-bootstrap";
 import { PaginationContainer } from "./styles";
 
-const PaginationComponent = ({ totalPages, getPage }) => {
-  //   const { id, image, name, species, status, gender, created, origin } = data;
-  const [page, setPage] = useState(1);
+const PaginationComponent = ({ totalPages, getPage, currentPage }) => {
+  const [page, setPage] = useState(currentPage);
   useEffect(() => {
     console.log("Mounted");
   }, []);

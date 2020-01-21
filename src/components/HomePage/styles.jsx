@@ -4,6 +4,7 @@ export const Section = styled.div`
   background-image: url("static/images/so-white.png");
   background-attachment: fixed;
   margin-bottom: 48px;
+  height: 100vh;
   & > * {
     .spacing-col {
       padding: 12px;
@@ -26,3 +27,7 @@ export const Text = styled.h6`
 export const FilterContainer = styled.div``;
 
 export const FilterSection = styled.div``;
+
+export const P = styled.p`
+  margin-top: 2rem;
+`;
